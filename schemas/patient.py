@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional, List
+from datetime import datetime
 from model.patient import Patient
 
 class PatientSchema(BaseModel):
@@ -7,10 +8,15 @@ class PatientSchema(BaseModel):
     """
     first_name: str = "John"
     last_name: str = "Doe"
-    date_of_birth: str = "2000-01-01"
-    email: Optional[str] = "john.doe@example.com"
+    cpf:str = "11111111111"
+    email: str = "john.doe@example.com"
     phone_number: str = "123456789"
-    address: Optional[str] = "123 Main St"
+    address: str = "123 Main St"
+
+class PatientListSchema(BaseModel):
+    """ Define como uma lista de pacientes deve ser representada
+    """
+    pacientes: List[PatientSchema]
 
 
 def apresenta_pacientes(pacientes: List[Patient]):
@@ -21,10 +27,10 @@ def apresenta_pacientes(pacientes: List[Patient]):
         result.append({
             "first_name": paciente.first_name,
             "last_name": paciente.last_name,
-            "date_of_birth": paciente.date_of_birth,
             "email": paciente.email,
             "phone_number": paciente.phone_number,
             "address": paciente.address,
+            "cpf": paciente.cpf
         })
 
     return {"pacientes": result}
@@ -35,8 +41,8 @@ def apresenta_paciente(paciente: Patient):
     return {
         "first_name": paciente.first_name,
         "last_name": paciente.last_name,
-        "date_of_birth": paciente.date_of_birth,
         "email": paciente.email,
         "phone_number": paciente.phone_number,
         "address": paciente.address,
+        "cpf": paciente.cpf
     }

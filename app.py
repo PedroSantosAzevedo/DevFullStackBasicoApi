@@ -33,14 +33,17 @@ def add_paciente(form: PatientSchema):
 
     Retorna uma representação dos pacientes associados.
     """
+
     paciente = Patient(
         first_name=form.first_name,
         last_name=form.last_name,
-        date_of_birth=form.date_of_birth,
+        cpf=form.cpf,
         email=form.email,
         phone_number=form.phone_number,
-        address=form.address)
-    logger.debug(f"Adicionando paciente de nome: '{paciente.first_name} {paciente.last_name}    '")
+        address=form.address
+    )
+    print(paciente.first_name, paciente.last_name, paciente.cpf, paciente.email, paciente.phone_number, paciente.address)
+    logger.debug(f"Adicionando paciente de nome: '{paciente.first_name} {paciente.last_name}'")
     try:
         # criando conexão com a base
         session = Session()
@@ -64,27 +67,27 @@ def add_paciente(form: PatientSchema):
         return {"mesage": error_msg}, 400
 
 
-# @app.get('/pacientes', tags=[produto_tag],
-#          responses={"200": ListagemProdutosSchema, "404": ErrorSchema})
-# def get_produtos():
-#     """Faz a busca por todos os Produto cadastrados
+@app.get('/pacientes', tags=[paciente_tag],
+         responses={"200": PatientListSchema, "404": ErrorSchema})
+def get_produtos():
+    """Faz a busca por todos os Produto cadastrados
 
-#     Retorna uma representação da listagem de produtos.
-#     """
-#     logger.debug(f"Coletando produtos ")
-#     # criando conexão com a base
-#     session = Session()
-#     # fazendo a busca
-#     produtos = session.query(Produto).all()
+    Retorna uma representação da listagem de produtos.
+    """
+    logger.debug(f"Coletando produtos ")
+    # criando conexão com a base
+    session = Session()
+    # fazendo a busca
+    pacientes = session.query(Patient).all()
 
-#     if not produtos:
-#         # se não há produtos cadastrados
-#         return {"produtos": []}, 200
-#     else:
-#         logger.debug(f"%d rodutos econtrados" % len(produtos))
-#         # retorna a representação de produto
-#         print(produtos)
-#         return apresenta_produtos(produtos), 200
+    if not pacientes:
+        # se não há produtos cadastrados
+        return {"pacientes": []}, 200
+    else:
+        logger.debug(f"%d pacientes encontrados" % len(pacientes))
+        # retorna a representação de pacientes
+        print(pacientes)
+        return apresenta_pacientes(pacientes), 200
 
 
 # @app.get('/produto', tags=[produto_tag],
