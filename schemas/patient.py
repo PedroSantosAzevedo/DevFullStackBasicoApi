@@ -13,11 +13,26 @@ class PatientSchema(BaseModel):
     phone_number: str = "123456789"
     address: str = "123 Main St"
 
+class PatientFetchSchema(BaseModel):
+    """ Define como um novo paciente a ser inserido deve ser representado
+    """
+    cpf:str = "11111111111"
+
 class PatientListSchema(BaseModel):
     """ Define como uma lista de pacientes deve ser representada
     """
     pacientes: List[PatientSchema]
 
+class PatientDelSchema(BaseModel):
+    """ Define como um paciente deletado deve ser representado
+    """
+    cpf: str
+
+class PatientNameSearchSchema(BaseModel):
+    """ Define como um paciente deletado deve ser representado
+    """
+    first_name: str = "John"
+ 
 
 def apresenta_pacientes(pacientes: List[Patient]):
     """ Retorna uma representação de uma lista de pacientes em json
@@ -46,3 +61,4 @@ def apresenta_paciente(paciente: Patient):
         "address": paciente.address,
         "cpf": paciente.cpf
     }
+      
