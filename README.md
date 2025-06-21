@@ -13,6 +13,10 @@ Após clonar o repositório, é necessário ir ao diretório raiz, pelo terminal
 
 > É fortemente indicado o uso de ambientes virtuais do tipo [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html).
 
+python3 -m venv <myenvpath>
+
+source .venv/bin/activate
+
 ```
 (env)$ pip install -r requirements.txt
 ```
