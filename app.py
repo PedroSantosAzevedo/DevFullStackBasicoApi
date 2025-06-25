@@ -102,9 +102,9 @@ def get_Patients(path: PatientNameSearchSchema):
         print(pacientes)
         return apresenta_pacientes(pacientes), 200
 
-@app.get('/pacienteCompleto/<cpf>', methods=['GET'], tags=[paciente_tag],
+@app.post('/pacienteCompleto/', tags=[paciente_tag],
             responses={"200": PatientSchema, "404": ErrorSchema})
-def get_Complete_Patient(path: PatientFetchSchema):
+def get_Complete_Patient(form: PatientFetchSchema):
     """Faz a busca por todos os Pacientes cadastrados
 
     Retorna uma representação da listagem de pacientes.
@@ -112,7 +112,7 @@ def get_Complete_Patient(path: PatientFetchSchema):
     session = Session()
 
     try:
-        patient = session.query(Patient).filter(Patient.cpf == path.cpf).first()
+        patient = session.query(Patient).filter(Patient.cpf == form.cpf).first()
     except Exception as e:
         error_msg = "Erro ao conectar com a base de dados :/"
         return {"mesage": error_msg}, 502   

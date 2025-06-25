@@ -13,6 +13,14 @@ class PatientSchema(BaseModel):
     phone_number: str = "123456789"
     address: str = "123 Main St"
 
+class SimplifiedPatientSchema(BaseModel):
+    """ Define como um paciente simplificado deve ser representado
+    """
+    first_name: str = "John"
+    last_name: str = "Doe"
+    cpf:str = "11111111111"
+
+
 class PatientFetchSchema(BaseModel):
     """ Define como um novo paciente a ser inserido deve ser representado
     """
@@ -21,7 +29,7 @@ class PatientFetchSchema(BaseModel):
 class PatientListSchema(BaseModel):
     """ Define como uma lista de pacientes deve ser representada
     """
-    pacientes: List[PatientSchema]
+    pacientes: List[SimplifiedPatientSchema]
 
 class PatientDelSchema(BaseModel):
     """ Define como um paciente deletado deve ser representado
@@ -42,9 +50,6 @@ def apresenta_pacientes(pacientes: List[Patient]):
         result.append({
             "first_name": paciente.first_name,
             "last_name": paciente.last_name,
-            "email": paciente.email,
-            "phone_number": paciente.phone_number,
-            "address": paciente.address,
             "cpf": paciente.cpf
         })
 
