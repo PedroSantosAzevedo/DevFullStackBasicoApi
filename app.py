@@ -127,18 +127,18 @@ def get_Complete_Patient(form: PatientFetchSchema):
         return apresenta_paciente(patient), 200
 
 
-@app.delete('/patient', tags=[paciente_tag],
+@app.delete('/delPaciente', tags=[paciente_tag],
             responses={"200": PatientDelSchema, "404": ErrorSchema})
 def del_patient(query: PatientDelSchema):
-    """Deleta um pactiente a partir do nome de propacienteduto informado
+    """Deleta um paciente a partir do nome de produto informado
 
     Retorna uma mensagem de confirmação da remoção.
     """
     patientId = unquote(unquote(query.cpf))
-    print(patientId)
+    print("Removendo paciente com CPF: ", patientId)
     # criando conexão com a base
     session = Session()
-    # fazendo a remoção
+    # fazendo a remoção     
     count = session.query(Patient).filter(Patient.cpf == patientId).delete()
     session.commit()
 
