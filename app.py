@@ -28,7 +28,7 @@ def home():
 @app.post('/paciente', tags=[paciente_tag],
           responses={"200": PatientSchema, "409": ErrorSchema, "400": ErrorSchema})
 def add_paciente(form: PatientSchema):
-    """Adiciona um novo Paciente à base de dados
+    """Adiciona um novo paciente à base de dados
 
     Retorna uma representação dos pacientes associados.
     """
@@ -52,8 +52,8 @@ def add_paciente(form: PatientSchema):
         return apresenta_paciente(paciente), 200
 
     except IntegrityError as e:
-        # como a duplicidade do nome é a provável razão do IntegrityError
-        error_msg = "Paciente de mesmo nome já salvo na base :/"
+        # como a duplicidade do cpf é a provável razão do IntegrityError
+        error_msg = "Paciente de mesmo cpf já salvo na base"
         return {"mesage": error_msg}, 409
 
     except Exception as e:
@@ -65,9 +65,9 @@ def add_paciente(form: PatientSchema):
 @app.get('/pacientes', tags=[paciente_tag],
          responses={"200": PatientListSchema, "404": ErrorSchema})
 def get_allPatients():
-    """Faz a busca por todos os Produto cadastrados
+    """Faz a busca por todos os pacientes cadastrados
 
-    Retorna uma representação da listagem de produtos.
+    Retorna uma representação da listagem de pacientes.
     """
     # criando conexão com a base
     session = Session()
@@ -75,27 +75,7 @@ def get_allPatients():
     pacientes = session.query(Patient).all()
 
     if not pacientes:
-        # se não há produtos cadastrados
-        return {"pacientes": []}, 200
-    else:
-        # retorna a representação de pacientes
-        print(pacientes)
-        return apresenta_pacientes(pacientes), 200
-    
-@app.get('/pacientes/<nome>', tags=[paciente_tag],
-         responses={"200": PatientSchema, "404": ErrorSchema})
-def get_Patients(path: PatientNameSearchSchema):
-    """Faz a busca por todos os Produto cadastrados
-
-    Retorna uma representação da listagem de produtos.
-    """
-    # criando conexão com a base
-    session = Session()
-    # fazendo a busca
-    pacientes = session.query(Patient).filter(Patient.first_name == path.first_name)
-
-    if not pacientes:
-        # se não há produtos cadastrados
+        # se não há pacientes cadastrados
         return {"pacientes": []}, 200
     else:
         # retorna a representação de pacientes
@@ -105,7 +85,7 @@ def get_Patients(path: PatientNameSearchSchema):
 @app.post('/pacienteCompleto/', tags=[paciente_tag],
             responses={"200": PatientSchema, "404": ErrorSchema})
 def get_Complete_Patient(form: PatientFetchSchema):
-    """Faz a busca por todos os Pacientes cadastrados
+    """Faz a busca por todos os pacientes cadastrados
 
     Retorna uma representação da listagem de pacientes.
     """
@@ -114,12 +94,12 @@ def get_Complete_Patient(form: PatientFetchSchema):
     try:
         patient = session.query(Patient).filter(Patient.cpf == form.cpf).first()
     except Exception as e:
-        error_msg = "Erro ao conectar com a base de dados :/"
+        error_msg = "Erro ao conectar com a base de dados"
         return {"mesage": error_msg}, 502   
 
     if not patient:
-        # se não há produtos cadastrados
-        error_msg = "Paciete não encontrado na base :/"
+        # se não há pacientes cadastrados
+        error_msg = "Paciente não encontrado na base"
         return {"mesage": error_msg}, 404
     else:
         # retorna a representação de pacientes
@@ -130,7 +110,7 @@ def get_Complete_Patient(form: PatientFetchSchema):
 @app.delete('/delPaciente', tags=[paciente_tag],
             responses={"200": PatientDelSchema, "404": ErrorSchema})
 def del_patient(query: PatientDelSchema):
-    """Deleta um paciente a partir do nome de produto informado
+    """Deleta um paciente a partir do cpf de paciente informado
 
     Retorna uma mensagem de confirmação da remoção.
     """
@@ -144,10 +124,10 @@ def del_patient(query: PatientDelSchema):
 
     if count:
         # retorna a representação da mensagem de confirmação
-        return {"mesage": "Produto removido", "id": patientId}
+        return {"mesage": "Paciente removido", "cpf": patientId}
     else:
-        # se o produto não foi encontrado
-        error_msg = "Produto não encontrado na base :/"
+        # se o paciente não foi encontrado
+        error_msg = "Paciente não encontrado na base :/"
         return {"mesage": error_msg}, 404
 
 

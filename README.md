@@ -18,7 +18,7 @@ python3 -m venv <myenvpath>
 ```
 
 ```
-source .venv/bin/activate
+source venv/Scripts/activate
 ```
 
 ```
